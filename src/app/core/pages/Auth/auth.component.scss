@@ -43,11 +43,36 @@
   margin-top: 50px;
 }
 
+:host ::ng-deep {
+  .p-inputtext {
+    height: 55.72px !important;
+    padding: 0px 11.89px 0px 11.89px !important;
+    border-radius: 7.93px !important;
+    -webkit-border-radius: 7.93px !important;
+    -moz-border-radius: 7.93px !important;
+    -ms-border-radius: 7.93px !important;
+    -o-border-radius: 7.93px !important;
+    box-shadow: 0px 18px 30px 0px #2f1c1c1a !important;
+  }
+  .p-button {
+    height: 56px !important;
+    padding: 8px !important;
+    gap: 8px !important;
+    border-radius: 20px !important;
+    -webkit-border-radius: 20px !important;
+    -moz-border-radius: 20px !important;
+    -ms-border-radius: 20px !important;
+    -o-border-radius: 20px !important;
+
+    box-shadow: 0px 18px 30px 0px #2f1c1c1a !important;
+  }
+}
 .login_form {
   width: Fill (410px) px;
   height: Hug (342px) px;
   margin-top: 100px;
   opacity: 0px;
+
   .recover {
     font-family: Poppins;
     font-size: 16px;
