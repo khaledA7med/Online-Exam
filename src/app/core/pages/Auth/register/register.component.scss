@@ -2,53 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 $main-color: #4461f2;
 
-.left_sec {
-  height: 937px;
-  border-radius: 0px 100px 100px 0px;
-  background: #f0f4fc;
-  box-shadow: 0px 5px 100px 0px #0000001a;
-
-  p {
-    font-family: "Poppins", sans-serif;
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 40px;
-    text-align: left;
-    text-underline-position: from-font;
-    text-decoration-skip-ink: none;
-  }
-  h1 {
-    font-family: "Poppins", sans-serif;
-    font-size: 50px;
-    font-weight: 700;
-    line-height: 75px;
-    text-align: left;
-    text-underline-position: from-font;
-    text-decoration-skip-ink: none;
-  }
-
-  span {
-    font-family: "Poppins", sans-serif;
-    font-size: 60px;
-    font-weight: 700;
-    line-height: 90px;
-    text-align: left;
-    text-underline-position: from-font;
-    text-decoration-skip-ink: none;
-  }
-}
-
-.top {
-  height: 42px;
-  top: 80px;
-  left: 998px;
-  opacity: 0px;
-}
-
 :host ::ng-deep {
-  .p-dropdown {
-    border: unset;
-  }
   .signin_input {
     height: 55.72px !important;
     padding: 0px 11.89px 0px 11.89px !important;
@@ -59,6 +13,17 @@ $main-color: #4461f2;
     -o-border-radius: 7.93px !important;
     box-shadow: 0px 18px 30px 0px #2f1c1c1a !important;
   }
+
+  .p-password {
+    height: 55.72px !important;
+    border-radius: 7.93px !important;
+    -webkit-border-radius: 7.93px !important;
+    -moz-border-radius: 7.93px !important;
+    -ms-border-radius: 7.93px !important;
+    -o-border-radius: 7.93px !important;
+    box-shadow: 0px 18px 30px 0px #2f1c1c1a !important;
+  }
+
   .signin {
     height: 56px !important;
     padding: 8px !important;
@@ -70,44 +35,21 @@ $main-color: #4461f2;
     -o-border-radius: 20px !important;
     box-shadow: 0px 18px 30px 0px #2f1c1c1a !important;
   }
-  .register {
-    background: #ffffff;
-    width: 129p;
-    height: 42px;
-    padding: 19px 21px 19px 19px;
-    gap: 10px;
-    border-radius: 15px;
-    border: 1px solid #e0e0e9;
-    box-shadow: 0px 10px 30px 0px #4461f20d;
-    font-family: "Inter", sans-serif;
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 24.2px;
-    text-align: left;
-    text-decoration-skip-ink: none;
-    color: $main-color;
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    -ms-border-radius: 15px;
-    -o-border-radius: 15px;
-  }
-  .login {
-    font-family: "Inter", sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 24.2px;
-    text-decoration-skip-ink: none;
-    border: unset;
-    background-color: unset;
-    color: $main-color;
-  }
 }
 .form {
   width: Fill (410px) px;
   height: Hug (342px) px;
-  margin-top: 100px;
-  opacity: 0px;
+  margin-top: 50px;
 
+  .rec {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+  }
   .recover {
     font-family: "Poppins", sans-serif;
     font-size: 16px;

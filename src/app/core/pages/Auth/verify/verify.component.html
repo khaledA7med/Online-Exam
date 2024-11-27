@@ -1,0 +1,55 @@
+<form class="form grid flex justify-content-center p-fluid" [formGroup]="verifyForm" (ngSubmit)="verify()">
+    <div class="col-12 lg:col-8 grid flex justify-content-center">
+        <div class="col-12 lg:col-8 title">
+            <p>Verify Code</p>
+        </div>
+        <div class="col-12 lg:col-8 field">
+            <input id="code" type="text" pInputText formControlName="code" class="w-full signin_input"
+                placeholder="Enter Code" />
+            <div class="text-right mt-3">
+                <span class="rec">
+                    Didn't receive a code?
+                </span>
+                <span (click)="resendCode()" class="recover">
+                    Resend
+                </span>
+            </div>
+        </div>
+
+        <div class="col-12 lg:col-8 field">
+            <button pButton pRipple type="submit" label="Verify" class="w-full p-button-rounded signin"></button>
+        </div>
+    </div>
+    <div class="col-12 lg:col-8 down">
+        <div class="grid flex justify-content-between">
+            <div class="col-4">
+                <hr>
+            </div>
+            <div class="col-4 text-center line_text px-0">Or Continue With</div>
+            <div class="col-4">
+                <hr>
+            </div>
+        </div>
+        <div class="grid flex justify-content-between text-center px-3 pt-5">
+
+            <div class="col-3 logo">
+                <img src="../../../../assets/Logo Google.png" alt="">
+            </div>
+
+            <div class="col-3 logo">
+
+                <img src="../../../../assets/Logo.png" alt="">
+            </div>
+
+            <div class="col-3 logo">
+
+                <img src="../../../../assets/logo facebook.png" alt="">
+            </div>
+
+            <div class="col-3 logo">
+
+                <img src="../../../../assets/Logo Apple.png" alt="">
+            </div>
+        </div>
+    </div>
+</form>

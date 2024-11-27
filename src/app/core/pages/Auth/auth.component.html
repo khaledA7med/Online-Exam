@@ -1,27 +1,6 @@
-<!-- <div class="flex justify-content-center align-items-center h-screen">
-    <p-card header="Login" styleClass="w-30rem">
-        <form class="p-fluid" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <div class="field mt-3">
-                <label for="email" class="block">Email</label>
-                <input id="email" type="text" pInputText formControlName="email" class="w-full" />
-            </div>
-
-            <div class="field mt-3">
-                <label for="password" class="block">Password</label>
-                <p-password id="password" [toggleMask]="true" formControlName="password" class="w-full"></p-password>
-            </div>
-
-            <div class="field mt-3">
-                <p-button type="submit" label="Submit" class="w-full"></p-button>
-            </div>
-        </form>
-    </p-card>
-</div> -->
-
-
-<div class="grid grid-nogutter">
-    <div class="col">
-        <div class="left_sec flex justify-content-center p-3 border-round-sm font-bold">
+<div class="grid">
+    <div class="col p-0 border-round-right">
+        <div class="left_sec flex justify-content-center p-3 font-bold">
             <div>
                 <div>
                     <h1>Welcome to<br><span style="color:#122D9C;">Elevate</span></h1>
@@ -32,137 +11,22 @@
         </div>
     </div>
     <div class="col">
-        <div class="p-3 border-round-sm font-bold">
+        <div class="p-3 font-bold">
             <div class="flex flex-row-reverse flex-wrap top">
-                <div class="flex align-items-center justify-content-center font-bold border-round m-2">
-                    <p-button label="Register" [outlined]="true" />
+                <div class=" font-bold border-round m-2">
+                    <button pButton pRipple class="p-button-rounded register" routerLink="/register">Register</button>
                 </div>
-                <div class="flex align-items-center justify-content-center font-bold border-round m-2">
-                    <p-button label="Sign in" [text]="true" />
+                <div class=" font-bold border-round m-2">
+                    <button pButton pRipple class="p-button-sm login" routerLink="/">Sign in</button>
                 </div>
-                <div class="flex align-items-center justify-content-center  font-bold border-round m-2">
-                    <p-splitButton label="English" [model]="items" text severity="secondary" />
+                <div class="  font-bold border-round m-2">
+                    <p-dropdown [options]="langs" [(ngModel)]="selectedLang" [showClear]="false" />
                 </div>
             </div>
-            <form class="login_form grid flex justify-content-center p-fluid" [formGroup]="loginForm"
-                (ngSubmit)="onSubmit()">
-                <div class="col-10 grid flex justify-content-center">
-                    <div class="col-8 title">
-                        <p>Sign in</p>
-                    </div>
-                    <div class="col-8 field">
-                        <input id="email" type="text" pInputText formControlName="email" class="w-full"
-                            placeholder="Email" />
-                    </div>
 
-                    <div class="col-8 field">
-                        <p-password id="password" [toggleMask]="true" formControlName="password" class="w-full"
-                            placeholder="Password"></p-password>
-                        <div class="recover text-right mt-2">
-                            <a href="">Recover Password ?</a>
-                        </div>
-                    </div>
 
-                    <div class="col-8 field">
-                        <button pButton pRipple type="submit" label="Sign in"
-                            class="w-full p-button-rounded sub"></button>
-                    </div>
+            <router-outlet></router-outlet>
 
-                    <div class="col-8 grid flex justify-content-between">
-                        <div class="col-4">
-                            <hr>
-                        </div>
-                        <div class="col-4 text-center line_text">Or Continue With</div>
-                        <div class="col-4">
-                            <hr>
-                        </div>
-                    </div>
-                    <div class="col-8">
-                        <div class="grid flex justify-content-between text-center">
-                            <div class="col-3 ">
-                                <div class="logos">
-                                    <img src="../../../../assets/Logo Google.png" alt="">
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="logos">
-
-                                    <img src="../../../../assets/Logo.png" alt="">
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="logos">
-
-                                    <img src="../../../../assets/logo facebook.png" alt="">
-                                </div>
-                            </div>
-                            <div class="col-3">
-                                <div class="logos">
-
-                                    <img src="../../../../assets/Logo Apple.png" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <!-- <div class="col-8 title">
-                    <p>Sign in</p>
-                </div>
-                <div class="col-8 field">
-                    <input id="email" type="text" pInputText formControlName="email" class="w-full"
-                        placeholder="Email" />
-                </div>
-
-                <div class="col-8 field">
-                    <p-password id="password" [toggleMask]="true" formControlName="password" class="w-full"
-                        placeholder="Password"></p-password>
-                </div>
-
-                <div class="col-8 field">
-                    <button pButton pRipple type="submit" label="Sign in" class="w-full p-button-rounded "></button>
-                    <div class="recover text-right mt-2">
-                        <a href="">Recover Password ?</a>
-                    </div>
-                </div>
-
-                <div class="col-8 grid flex justify-content-between">
-                    <div class="col-4">
-                        <hr>
-                    </div>
-                    <div class="col-4 text-center line_text">Or Continue With</div>
-                    <div class="col-4">
-                        <hr>
-                    </div>
-                </div>
-                <div class="col-8">
-                    <div class="grid flex justify-content-between text-center">
-                        <div class="col-3 ">
-                            <div class="logos">
-                                <img src="../../../../assets/Logo Google.png" alt="">
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="logos">
-
-                                <img src="../../../../assets/Logo.png" alt="">
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="logos">
-
-                                <img src="../../../../assets/logo facebook.png" alt="">
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="logos">
-
-                                <img src="../../../../assets/Logo Apple.png" alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-            </form>
         </div>
     </div>
 </div>
