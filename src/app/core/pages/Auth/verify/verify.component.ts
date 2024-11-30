@@ -10,8 +10,10 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { DropdownModule } from 'primeng/dropdown';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Verify, VerifyForm } from '../../../interfaces/verify';
+import { Message, MessageService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
 
 @Component({
   selector: 'app-verify',
@@ -24,14 +26,21 @@ import { Verify, VerifyForm } from '../../../interfaces/verify';
     InputTextModule,
     DropdownModule,
     RouterModule,
+    MessagesModule,
   ],
   templateUrl: './verify.component.html',
   styleUrl: './verify.component.scss',
+  providers: [MessageService],
 })
 export class VerifyComponent {
   verifyForm!: FormGroup<VerifyForm>;
+  messages!: Message[];
 
-  constructor(private _AuthApiService: AuthApiService) {}
+  constructor(
+    private _AuthApiService: AuthApiService,
+    private messageService: MessageService,
+    private route: Router
+  ) {}
 
   ngOnInit(): void {
     this.initVerifyForm();
@@ -39,7 +48,7 @@ export class VerifyComponent {
 
   initVerifyForm(): void {
     this.verifyForm = new FormGroup<VerifyForm>({
-      code: new FormControl(''),
+      resetCode: new FormControl(''),
     });
   }
 
@@ -51,11 +60,23 @@ export class VerifyComponent {
 
   verify() {
     let data: Verify = {
-      code: this.f_verify.code.value!,
+      resetCode: this.f_verify.resetCode.value!,
     };
     this._AuthApiService.verifyCode(data).subscribe({
-      next: (res) => console.log(res),
-      error: (err) => console.log(err),
+      next: (res) => {
+        if (res.status === 'Success') {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Verified Successfully',
+          });
+          setTimeout(() => {
+            this.route.navigate(['/set-password']);
+          }, 3000);
+        }
+      },
+      error: (err) =>
+        (this.messages = [{ severity: 'error', detail: err?.error?.message }]),
     });
   }
 }

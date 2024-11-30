@@ -10,9 +10,10 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { DropdownModule } from 'primeng/dropdown';
-import { Login, LoginForm } from '../../../interfaces/login';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { SetPassword, SetPasswordForm } from '../../../interfaces/set-password';
+import { Message, MessageService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
 
 @Component({
   selector: 'app-set-password',
@@ -25,14 +26,21 @@ import { SetPassword, SetPasswordForm } from '../../../interfaces/set-password';
     InputTextModule,
     DropdownModule,
     RouterModule,
+    MessagesModule,
   ],
   templateUrl: './set-password.component.html',
   styleUrl: './set-password.component.scss',
+  providers: [MessageService],
 })
 export class SetPasswordComponent {
   setPasswordForm!: FormGroup<SetPasswordForm>;
+  messages!: Message[];
 
-  constructor(private _AuthApiService: AuthApiService) {}
+  constructor(
+    private _AuthApiService: AuthApiService,
+    private messageService: MessageService,
+    private route: Router
+  ) {}
 
   ngOnInit(): void {
     this.initSetPasswordForm();
@@ -40,8 +48,8 @@ export class SetPasswordComponent {
 
   initSetPasswordForm(): void {
     this.setPasswordForm = new FormGroup<SetPasswordForm>({
-      password: new FormControl(''),
-      confirmPassword: new FormControl(''),
+      email: new FormControl(''),
+      newPassword: new FormControl(''),
     });
   }
 
@@ -51,12 +59,24 @@ export class SetPasswordComponent {
 
   signin() {
     let data: SetPassword = {
-      password: this.f_setPassword.password.value!,
-      confirmPassword: this.f_setPassword.confirmPassword.value!,
+      email: this.f_setPassword.email.value!,
+      newPassword: this.f_setPassword.newPassword.value!,
     };
-    this._AuthApiService.changePassword(data).subscribe({
-      next: (res) => console.log(res),
-      error: (err) => console.log(err),
+    this._AuthApiService.resetPassword(data).subscribe({
+      next: (res) => {
+        if (res.message === 'success') {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Password Changed Successfully',
+          });
+          setTimeout(() => {
+            this.route.navigate(['/']);
+          }, 3000);
+        }
+      },
+      error: (err) =>
+        (this.messages = [{ severity: 'error', detail: err?.error?.message }]),
     });
   }
 }

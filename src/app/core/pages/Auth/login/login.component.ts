@@ -11,7 +11,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { DropdownModule } from 'primeng/dropdown';
 import { Login, LoginForm } from '../../../interfaces/login';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { Message, MessageService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -23,14 +25,21 @@ import { RouterModule } from '@angular/router';
     InputTextModule,
     DropdownModule,
     RouterModule,
+    MessagesModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
+  providers: [MessageService],
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup<LoginForm>;
+  messages!: Message[];
 
-  constructor(private _AuthApiService: AuthApiService) {}
+  constructor(
+    private _AuthApiService: AuthApiService,
+    private messageService: MessageService,
+    private route: Router
+  ) {}
 
   ngOnInit(): void {
     this.initLoginForm();
@@ -53,8 +62,19 @@ export class LoginComponent implements OnInit {
       password: this.f_login.password.value!,
     };
     this._AuthApiService.login(data).subscribe({
-      next: (res) => console.log(res),
-      error: (err) => console.log(err),
+      next: (res) => {
+        if (res.message === 'success') {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Login Successfully',
+          });
+          localStorage.setItem('token', res.token);
+        }
+        console.log(res);
+      },
+      error: (err) =>
+        (this.messages = [{ severity: 'error', detail: err?.error?.message }]),
     });
   }
 }

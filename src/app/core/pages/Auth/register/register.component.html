@@ -1,7 +1,12 @@
 <form class="form grid flex justify-content-center p-fluid" [formGroup]="registerForm" (ngSubmit)="signup()">
     <div class="col-12 lg:col-8 grid flex justify-content-center">
+        <p-messages [(value)]="messages" [enableService]="false" />
         <div class="col-12 lg:col-8 title">
             <p>Sign up</p>
+        </div>
+        <div class="col-12 lg:col-8 field">
+            <input id="username" type="text" pInputText formControlName="username" class="w-full signin_input"
+                placeholder="User Name" />
         </div>
         <div class="col-12 lg:col-8 field">
             <input id="firstName" type="text" pInputText formControlName="firstName" class="w-full signin_input"
@@ -10,6 +15,10 @@
         <div class="col-12 lg:col-8 field">
             <input id="lastName" type="text" pInputText formControlName="lastName" class="w-full signin_input"
                 placeholder="Last Name" />
+        </div>
+        <div class="col-12 lg:col-8 field">
+            <input id="phone" type="text" pInputText formControlName="phone" class="w-full signin_input"
+                placeholder="Phone Number" />
         </div>
         <div class="col-12 lg:col-8 field">
             <input id="email" type="text" pInputText formControlName="email" class="w-full signin_input"
@@ -21,7 +30,7 @@
                 placeholder="Password"></p-password>
         </div>
         <div class="col-12 lg:col-8 field">
-            <p-password id="confirmPassword" [toggleMask]="true" formControlName="confirmPassword" class="w-full"
+            <p-password id="rePassword" [toggleMask]="true" formControlName="rePassword" class="w-full"
                 placeholder="Confirm Password"></p-password>
             <div class="text-center mt-3">
                 <span class="rec">

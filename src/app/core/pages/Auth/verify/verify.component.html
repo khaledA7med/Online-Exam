@@ -1,10 +1,12 @@
 <form class="form grid flex justify-content-center p-fluid" [formGroup]="verifyForm" (ngSubmit)="verify()">
     <div class="col-12 lg:col-8 grid flex justify-content-center">
+        <p-messages [(value)]="messages" [enableService]="false" />
+
         <div class="col-12 lg:col-8 title">
             <p>Verify Code</p>
         </div>
         <div class="col-12 lg:col-8 field">
-            <input id="code" type="text" pInputText formControlName="code" class="w-full signin_input"
+            <input id="resetCode" type="text" pInputText formControlName="resetCode" class="w-full signin_input"
                 placeholder="Enter Code" />
             <div class="text-right mt-3">
                 <span class="rec">

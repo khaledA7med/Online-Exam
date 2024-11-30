@@ -10,7 +10,10 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { DropdownModule } from 'primeng/dropdown';
+import { MessagesModule } from 'primeng/messages';
 import { Register, RegisterForm } from '../../../interfaces/register';
+import { Message, MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -22,14 +25,21 @@ import { Register, RegisterForm } from '../../../interfaces/register';
     ReactiveFormsModule,
     InputTextModule,
     DropdownModule,
+    MessagesModule,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
+  providers: [MessageService],
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup<RegisterForm>;
+  messages!: Message[];
 
-  constructor(private _AuthApiService: AuthApiService) {}
+  constructor(
+    private _AuthApiService: AuthApiService,
+    private messageService: MessageService,
+    private route: Router
+  ) {}
 
   ngOnInit(): void {
     this.initRegisterForm();
@@ -37,11 +47,13 @@ export class RegisterComponent implements OnInit {
 
   initRegisterForm(): void {
     this.registerForm = new FormGroup<RegisterForm>({
+      username: new FormControl(''),
       firstName: new FormControl(''),
       lastName: new FormControl(''),
+      phone: new FormControl(''),
       email: new FormControl(''),
       password: new FormControl(''),
-      confirmPassword: new FormControl(''),
+      rePassword: new FormControl(''),
     });
   }
 
@@ -51,15 +63,31 @@ export class RegisterComponent implements OnInit {
 
   signup() {
     let data: Register = {
-      firstName: this.f_register.email.value!,
-      lastName: this.f_register.email.value!,
+      username: this.f_register.username.value!,
+      firstName: this.f_register.firstName.value!,
+      lastName: this.f_register.lastName.value!,
+      phone: this.f_register.phone.value!,
       email: this.f_register.email.value!,
       password: this.f_register.password.value!,
-      confirmPassword: this.f_register.password.value!,
+      rePassword: this.f_register.rePassword.value!,
     };
     this._AuthApiService.register(data).subscribe({
-      next: (res) => console.log(res),
-      error: (err) => console.log(err),
+      next: (res) => {
+        if (res.message === 'success') {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Account Created Successfully',
+          });
+          setTimeout(() => {
+            this.route.navigate(['/']);
+          }, 3000);
+        }
+        console.log(res.message);
+      },
+      error: (err) => {
+        this.messages = [{ severity: 'error', detail: err?.error?.message }];
+      },
     });
   }
 }

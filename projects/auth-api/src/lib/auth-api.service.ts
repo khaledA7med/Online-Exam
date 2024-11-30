@@ -15,17 +15,15 @@ export class AuthApiService implements AuthApi {
   ) {}
 
   login(data: any): Observable<any> {
-    return this._httpClient.post(AuthEndpoints.LOGIN, data).pipe(
-      map((res) => this._authApiAdapter.loginAdapt(res)),
-      catchError((err) => of([]))
-    );
+    return this._httpClient
+      .post(AuthEndpoints.LOGIN, data)
+      .pipe(map((res) => this._authApiAdapter.loginAdapt(res)));
   }
 
   register(data: any): Observable<any> {
-    return this._httpClient.post(AuthEndpoints.REGISTER, data).pipe(
-      map((res) => this._authApiAdapter.registerAdapt(res)),
-      catchError((err) => of([]))
-    );
+    return this._httpClient
+      .post(AuthEndpoints.REGISTER, data)
+      .pipe(map((res) => this._authApiAdapter.registerAdapt(res)));
   }
 
   logout(): Observable<any> {
@@ -37,15 +35,21 @@ export class AuthApiService implements AuthApi {
   }
 
   resetPassword(data: any): Observable<any> {
-    return this._httpClient.post(AuthEndpoints.RESET_PASSWORD, data);
+    return this._httpClient
+      .put(AuthEndpoints.RESET_PASSWORD, data)
+      .pipe(map((res) => this._authApiAdapter.resetPassAdapt(res)));
   }
 
   forgetPassword(data: any): Observable<any> {
-    return this._httpClient.post(AuthEndpoints.FORGET_PASSWORD, data);
+    return this._httpClient
+      .post(AuthEndpoints.FORGET_PASSWORD, data)
+      .pipe(map((res) => this._authApiAdapter.forgetPassAdapt(res)));
   }
 
   verifyCode(data: any): Observable<any> {
-    return this._httpClient.post(AuthEndpoints.VERIFY_CODE, data);
+    return this._httpClient
+      .post(AuthEndpoints.VERIFY_CODE, data)
+      .pipe(map((res) => this._authApiAdapter.verifyCodeAdapt(res)));
   }
 
   userInfo(): Observable<any> {

@@ -1,5 +1,6 @@
 <form class="form grid flex justify-content-center p-fluid" [formGroup]="loginForm" (ngSubmit)="signin()">
     <div class="col-12 lg:col-8 grid flex justify-content-center">
+        <p-messages [(value)]="messages" [enableService]="false" />
         <div class="col-12 lg:col-8 title">
             <p>Sign in</p>
         </div>

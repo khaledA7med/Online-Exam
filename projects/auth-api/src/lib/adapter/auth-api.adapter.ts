@@ -18,4 +18,20 @@ export class AuthApiAdapter implements Adapter {
       message: data.message,
     };
   }
+  forgetPassAdapt(data: any) {
+    return {
+      message: data.message,
+      info: data.info,
+    };
+  }
+  verifyCodeAdapt(data: any) {
+    return {
+      status: data.status,
+    };
+  }
+  resetPassAdapt(data: any) {
+    return {
+      message: data.message,
+    };
+  }
 }
