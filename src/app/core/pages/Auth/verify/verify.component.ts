@@ -1,36 +1,17 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthApiService } from 'auth-api';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
-import { DropdownModule } from 'primeng/dropdown';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { Verify, VerifyForm } from '../../../interfaces/verify';
 import { Message, MessageService } from 'primeng/api';
-import { MessagesModule } from 'primeng/messages';
 import { ForgetPassword } from '../../../interfaces/forget-password';
 import { Subscription } from 'rxjs';
+import { SharedModule } from '../../../../shared/components/ui/shared/shared.module';
 
 @Component({
   selector: 'app-verify',
   standalone: true,
-  imports: [
-    ButtonModule,
-    PasswordModule,
-    FormsModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    DropdownModule,
-    RouterModule,
-    MessagesModule,
-  ],
+  imports: [SharedModule],
   templateUrl: './verify.component.html',
   styleUrl: './verify.component.scss',
   providers: [MessageService],
@@ -132,14 +113,14 @@ export class VerifyComponent implements OnInit, OnDestroy {
     let sub = this._AuthApiService.verifyCode(data).subscribe({
       next: (res) => {
         if (res.status === 'Success') {
-          this.submitted = false;
-          this.loading = false;
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
             detail: 'Verified Successfully',
           });
           setTimeout(() => {
+            this.submitted = false;
+            this.loading = false;
             this.route.navigate(['/set-password']);
           }, 3000);
         }

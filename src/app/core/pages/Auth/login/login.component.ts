@@ -1,34 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthApiService } from 'auth-api';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
-import { DropdownModule } from 'primeng/dropdown';
 import { Login, LoginForm } from '../../../interfaces/login';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { Message, MessageService } from 'primeng/api';
-import { MessagesModule } from 'primeng/messages';
 import { Subscription } from 'rxjs';
+import { SharedModule } from '../../../../shared/components/ui/shared/shared.module';
+
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    ButtonModule,
-    PasswordModule,
-    FormsModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    DropdownModule,
-    RouterModule,
-    MessagesModule,
-  ],
+  imports: [SharedModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   providers: [MessageService],
@@ -48,9 +30,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initLoginForm();
-    this.loginForm.reset();
   }
 
+  //#region init form
   initLoginForm(): void {
     this.loginForm = new FormGroup<LoginForm>({
       email: new FormControl('', [
@@ -68,7 +50,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   get f_login(): LoginForm {
     return this.loginForm.controls;
   }
+  //#endregion
 
+  //#region validation check
   validationChecker(): boolean {
     if (this.loginForm.invalid) {
       this.messages = [{ severity: 'error', detail: 'Please check your data' }];
@@ -76,7 +60,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     return true;
   }
+  //#endregion
 
+  //#region submit form
   signin() {
     this.submitted = true;
     if (!this.validationChecker()) return;
@@ -90,7 +76,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (res.message === 'success') {
           this.loading = false;
           this.submitted = false;
-
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -107,6 +92,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
     this.subscription.push(sub);
   }
+  //#endregion
 
   ngOnDestroy(): void {
     this.subscription && this.subscription.forEach((s) => s.unsubscribe());

@@ -1,37 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthApiService } from 'auth-api';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
-import { DropdownModule } from 'primeng/dropdown';
 import {
   ForgetPassword,
   ForgetPasswordForm,
 } from '../../../interfaces/forget-password';
 import { Message, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
-import { MessagesModule } from 'primeng/messages';
 import { Subscription } from 'rxjs';
+import { SharedModule } from '../../../../shared/components/ui/shared/shared.module';
 
 @Component({
   selector: 'app-forget-password',
   standalone: true,
-  imports: [
-    ButtonModule,
-    PasswordModule,
-    FormsModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    DropdownModule,
-    MessagesModule,
-  ],
+  imports: [SharedModule],
   templateUrl: './forget-password.component.html',
   styleUrl: './forget-password.component.scss',
   providers: [MessageService],
@@ -53,6 +35,7 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
     this.initLoginForm();
   }
 
+  //#region init form
   initLoginForm(): void {
     this.forgetPasswordForm = new FormGroup<ForgetPasswordForm>({
       email: new FormControl('', [
@@ -65,7 +48,9 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
   get f_forgetPassword(): ForgetPasswordForm {
     return this.forgetPasswordForm.controls;
   }
+  //#endregion
 
+  //#region validation check
   validationChecker(): boolean {
     if (this.forgetPasswordForm.invalid) {
       this.messages = [{ severity: 'error', detail: 'Please check your data' }];
@@ -73,7 +58,9 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
     }
     return true;
   }
+  //#endregion
 
+  //#region submit form
   forgetPassword() {
     this.submitted = true;
     if (!this.validationChecker()) return;
@@ -84,8 +71,6 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
     let sub = this._AuthApiService.forgetPassword(data).subscribe({
       next: (res) => {
         if (res.message === 'success') {
-          this.submitted = false;
-          this.loading = false;
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -93,6 +78,8 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
           });
           localStorage.setItem('email', data.email);
           setTimeout(() => {
+            this.submitted = false;
+            this.loading = false;
             this.route.navigate(['/verify-code']);
           }, 3000);
         }
@@ -105,6 +92,7 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
     });
     this.subscription.push(sub);
   }
+  //#endregion
 
   ngOnDestroy(): void {
     this.subscription && this.subscription.forEach((s) => s.unsubscribe());

@@ -1,10 +1,14 @@
+<p-toast />
 <form class="form grid flex justify-content-center p-fluid" [formGroup]="verifyForm" (ngSubmit)="verify()">
     <div class="col-12 lg:col-8 grid flex justify-content-center">
+        <!-- error message -->
         <p-messages [(value)]="messages" [enableService]="false" />
 
         <div class="col-12 lg:col-8 title">
             <p>Verify Code</p>
         </div>
+
+        <!-- code -->
         <div class="col-12 lg:col-8 field">
             <input id="resetCode" type="text" pInputText formControlName="resetCode" class="w-full signin_input"
                 [class.ng-invalid]="
@@ -20,6 +24,8 @@
             } @else if (f_verify.resetCode.hasError('pattern')) {
             <small id="username2-help" class="p-error block">Code must be only numbers</small>
             }
+
+            <!-- resend code -->
             <div class="text-right mt-3">
                 @if(!resendDisabled){
                 <span class="rec">
@@ -34,8 +40,10 @@
                 </span>
                 }
             </div>
+
         </div>
 
+        <!-- submit -->
         <div class="col-12 lg:col-8 field">
             <button pButton pRipple type="submit" [disabled]="submitted"
                 class="w-full p-button-rounded signin justify-content-center">
@@ -45,7 +53,9 @@
                 }
             </button>
         </div>
+
     </div>
+
     <div class="col-12 lg:col-8 down">
         <div class="grid flex justify-content-between">
             <div class="col-4">

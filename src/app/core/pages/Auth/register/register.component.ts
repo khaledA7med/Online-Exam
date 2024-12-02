@@ -3,35 +3,21 @@ import {
   AbstractControl,
   FormControl,
   FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
   ValidationErrors,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { AuthApiService } from 'auth-api';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
-import { DropdownModule } from 'primeng/dropdown';
-import { MessagesModule } from 'primeng/messages';
 import { Register, RegisterForm } from '../../../interfaces/register';
 import { Message, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { SharedModule } from '../../../../shared/components/ui/shared/shared.module';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [
-    ButtonModule,
-    PasswordModule,
-    FormsModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    DropdownModule,
-    MessagesModule,
-  ],
+  imports: [SharedModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   providers: [MessageService],
@@ -154,14 +140,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
     let sub = this._AuthApiService.register(data).subscribe({
       next: (res) => {
         if (res.message === 'success') {
-          this.submitted = false;
-          this.loading = false;
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
             detail: 'Account Created Successfully',
           });
           setTimeout(() => {
+            this.submitted = false;
+            this.loading = false;
             this.route.navigate(['/']);
           }, 3000);
         }

@@ -1,9 +1,14 @@
+<p-toast />
 <form class="form grid flex justify-content-center p-fluid" [formGroup]="loginForm" (ngSubmit)="signin()">
     <div class="col-12 lg:col-8 grid flex justify-content-center">
+        <!-- error message -->
         <p-messages [(value)]="messages" [enableService]="false" />
+
         <div class="col-12 lg:col-8 title">
             <p>Sign in</p>
         </div>
+
+        <!-- email -->
         <div class="col-12 lg:col-8 field">
             <input id="email" type="text" [autofocus]="true" pInputText formControlName="email" [class.ng-invalid]="
                 (f_login.email.touched || submitted) && (f_login.email.hasError('pattern') ||
@@ -17,6 +22,7 @@
             }
         </div>
 
+        <!-- password -->
         <div class="col-12 lg:col-8 field">
             <p-password id="password" [toggleMask]="true" formControlName="password" class="w-full" [feedback]='false'
                 [class.ng-invalid]="
@@ -40,6 +46,7 @@
             </div>
         </div>
 
+        <!-- submit -->
         <div class="col-12 lg:col-8 field">
             <button pButton pRipple type="submit" class="w-full p-button-rounded signin justify-content-center"
                 [disabled]="submitted">
@@ -49,7 +56,9 @@
                 }
             </button>
         </div>
+
     </div>
+
     <div class="col-12 lg:col-8 down">
         <div class="grid flex justify-content-between">
             <div class="col-4">
