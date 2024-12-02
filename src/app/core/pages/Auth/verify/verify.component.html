@@ -7,19 +7,43 @@
         </div>
         <div class="col-12 lg:col-8 field">
             <input id="resetCode" type="text" pInputText formControlName="resetCode" class="w-full signin_input"
-                placeholder="Enter Code" />
+                [class.ng-invalid]="
+                (f_verify.resetCode.touched || submitted) && (f_verify.resetCode.hasError('pattern') ||
+                f_verify.resetCode.hasError('required') || f_verify.resetCode.hasError('minlength'))" [class.ng-dirty]="
+                (f_verify.resetCode.touched || submitted) && (f_verify.resetCode.hasError('pattern') ||
+                f_verify.resetCode.hasError('required') || f_verify.resetCode.hasError('minlength'))" [minlength]="6"
+                [maxlength]="6" placeholder="Enter Code" />
+            @if((f_verify.resetCode.touched || submitted) && f_verify.resetCode.hasError('required')){
+            <small id="username2-help" class="p-error block">Code is Required</small>
+            } @else if (f_verify.resetCode.hasError('minlength') || f_verify.resetCode.hasError('maxlength')) {
+            <small id="username2-help" class="p-error block">Code must be 6 numbers</small>
+            } @else if (f_verify.resetCode.hasError('pattern')) {
+            <small id="username2-help" class="p-error block">Code must be only numbers</small>
+            }
             <div class="text-right mt-3">
+                @if(!resendDisabled){
                 <span class="rec">
                     Didn't receive a code?
                 </span>
                 <span (click)="resendCode()" class="recover">
                     Resend
                 </span>
+                } @else if (resendDisabled) {
+                <span class="recover">
+                    Resend in {{ timeRemaining }} seconds
+                </span>
+                }
             </div>
         </div>
 
         <div class="col-12 lg:col-8 field">
-            <button pButton pRipple type="submit" label="Verify" class="w-full p-button-rounded signin"></button>
+            <button pButton pRipple type="submit" [disabled]="submitted"
+                class="w-full p-button-rounded signin justify-content-center">
+                Verify
+                @if (loading) {
+                <i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i>
+                }
+            </button>
         </div>
     </div>
     <div class="col-12 lg:col-8 down">

@@ -1,37 +1,134 @@
 <form class="form grid flex justify-content-center p-fluid" [formGroup]="registerForm" (ngSubmit)="signup()">
     <div class="col-12 lg:col-8 grid flex justify-content-center">
+
+        <!-- error message -->
         <p-messages [(value)]="messages" [enableService]="false" />
+
         <div class="col-12 lg:col-8 title">
             <p>Sign up</p>
         </div>
+
+        <!-- username -->
         <div class="col-12 lg:col-8 field">
             <input id="username" type="text" pInputText formControlName="username" class="w-full signin_input"
+                [class.ng-invalid]="
+            (f_register.username.touched || submitted) && (f_register.username.hasError('pattern') ||
+            f_register.username.hasError('required') || f_register.username.hasError('minlength') || f_register.username.hasError('maxlength'))"
+                [class.ng-dirty]="
+                (f_register.username.touched || submitted) && (f_register.username.hasError('pattern') ||
+                f_register.username.hasError('required') || f_register.username.hasError('minlength') || f_register.username.hasError('maxlength'))"
                 placeholder="User Name" />
-        </div>
-        <div class="col-12 lg:col-8 field">
-            <input id="firstName" type="text" pInputText formControlName="firstName" class="w-full signin_input"
-                placeholder="First Name" />
-        </div>
-        <div class="col-12 lg:col-8 field">
-            <input id="lastName" type="text" pInputText formControlName="lastName" class="w-full signin_input"
-                placeholder="Last Name" />
-        </div>
-        <div class="col-12 lg:col-8 field">
-            <input id="phone" type="text" pInputText formControlName="phone" class="w-full signin_input"
-                placeholder="Phone Number" />
-        </div>
-        <div class="col-12 lg:col-8 field">
-            <input id="email" type="text" pInputText formControlName="email" class="w-full signin_input"
-                placeholder="Email" />
+            @if((f_register.username.touched || submitted) && f_register.username.hasError('required')){
+            <small id="username2-help" class="p-error block">Username is Required</small>
+            } @else if (f_register.username.hasError('minlength')) {
+            <small id="username2-help" class="p-error block">Username must be at least 4 characters long</small>
+            } @else if (f_register.username.hasError('maxlenth')) {
+            <small id="username2-help" class="p-error block">Username must be at most 25 characters long</small>
+            }
+            @else if (f_register.username.hasError('pattern')) {
+            <small id="username2-help" class="p-error block">Username must contain only alphabet letters</small>
+            }
         </div>
 
+        <!-- first name -->
         <div class="col-12 lg:col-8 field">
-            <p-password id="password" [toggleMask]="true" formControlName="password" class="w-full"
-                placeholder="Password"></p-password>
+            <input id="firstName" type="text" pInputText formControlName="firstName" class="w-full signin_input"
+                [class.ng-invalid]="
+            (f_register.firstName.touched || submitted) && (f_register.firstName.hasError('pattern') ||
+            f_register.firstName.hasError('required'))" [class.ng-dirty]="
+            (f_register.firstName.touched || submitted) && (f_register.firstName.hasError('pattern') ||
+            f_register.firstName.hasError('required'))" placeholder="First Name" />
+            @if((f_register.firstName.touched || submitted) && f_register.firstName.hasError('required')){
+            <small id="username2-help" class="p-error block">First Name is Required</small>
+            } @else if (f_register.firstName.hasError('pattern')) {
+            <small id="username2-help" class="p-error block">First Name must contain only alphabet letters</small>
+            }
         </div>
+
+        <!-- last name -->
         <div class="col-12 lg:col-8 field">
-            <p-password id="rePassword" [toggleMask]="true" formControlName="rePassword" class="w-full"
-                placeholder="Confirm Password"></p-password>
+            <input id="lastName" type="text" pInputText formControlName="lastName" class="w-full signin_input"
+                [class.ng-invalid]="
+            (f_register.lastName.touched || submitted) && (f_register.lastName.hasError('pattern') ||
+            f_register.lastName.hasError('required'))" [class.ng-dirty]="
+            (f_register.lastName.touched || submitted) && (f_register.lastName.hasError('pattern') ||
+            f_register.lastName.hasError('required'))" placeholder="Last Name" />
+            @if((f_register.lastName.touched || submitted) && f_register.lastName.hasError('required')){
+            <small id="username2-help" class="p-error block">Last Name is Required</small>
+            } @else if (f_register.lastName.hasError('pattern')) {
+            <small id="username2-help" class="p-error block">Last Name must contain only alphabet letters</small>
+            }
+        </div>
+
+        <!-- phone number -->
+        <div class="col-12 lg:col-8 field">
+            <input id="phone" type="text" pInputText formControlName="phone" class="w-full signin_input"
+                [class.ng-invalid]="
+            (f_register.phone.touched || submitted) && (f_register.phone.hasError('pattern') ||
+            f_register.phone.hasError('required'))" [class.ng-dirty]="
+            (f_register.phone.touched || submitted) && (f_register.phone.hasError('pattern') ||
+            f_register.phone.hasError('required'))" placeholder="Phone Number" />
+            @if((f_register.phone.touched || submitted) && f_register.phone.hasError('required')){
+            <small id="username2-help" class="p-error block">Phone number is Required</small>
+            } @else if (f_register.phone.hasError('pattern')) {
+            <small id="username2-help" class="p-error block">Phone number is Invalid</small>
+            }
+        </div>
+
+        <!-- email -->
+        <div class="col-12 lg:col-8 field">
+            <input id="email" type="text" pInputText formControlName="email" [class.ng-invalid]="
+            (f_register.email.touched || submitted) && (f_register.email.hasError('pattern') ||
+            f_register.email.hasError('required'))" [class.ng-dirty]="
+            (f_register.email.touched || submitted) && (f_register.email.hasError('pattern') ||
+            f_register.email.hasError('required'))" class="w-full signin_input" placeholder="Email" />
+            @if((f_register.email.touched || submitted) && f_register.email.hasError('required')){
+            <small id="username2-help" class="p-error block">Email is Required</small>
+            } @else if (f_register.email.hasError('pattern')) {
+            <small id="username2-help" class="p-error block">Email is Invalid</small>
+            }
+        </div>
+
+        <!-- password -->
+        <div class="col-12 lg:col-8 field">
+            <p-password id="password" [feedback]="false" [toggleMask]="true" formControlName="password"
+                [class.ng-invalid]="
+                (f_register.password.touched || submitted) && (f_register.password.hasError('pattern') ||
+                f_register.password.hasError('required') || f_register.password.hasError('minlength'))"
+                [class.ng-dirty]="
+                (f_register.password.touched || submitted) && (f_register.password.hasError('pattern') ||
+                f_register.password.hasError('required') || f_register.password.hasError('minlength'))" class="w-full"
+                placeholder="Password"></p-password>
+            @if((f_register.password.touched || submitted) && f_register.password.hasError('required')){
+            <small id="username2-help" class="p-error block">Password is Required</small>
+            } @else if (f_register.password.hasError('minlength')) {
+            <small id="username2-help" class="p-error block">Password must be at least 6 characters long</small>
+            } @else if (f_register.password.hasError('pattern')) {
+            <small id="username2-help" class="p-error block">Password must contain at least one uppercase letter and one
+                number</small>
+            }
+        </div>
+
+        <!-- re-password -->
+        <div class="col-12 lg:col-8 field">
+            <p-password id="rePassword" [feedback]="false" [toggleMask]="true" formControlName="rePassword"
+                [class.ng-invalid]="
+                (f_register.rePassword.touched || submitted) && (f_register.rePassword.hasError('pattern') || f_register.rePassword.hasError('passwordMismatch') ||
+                f_register.rePassword.hasError('required') || f_register.rePassword.hasError('minlength'))"
+                [class.ng-dirty]="
+                (f_register.rePassword.touched || submitted) && (f_register.rePassword.hasError('pattern') || f_register.rePassword.hasError('passwordMismatch') ||
+                f_register.rePassword.hasError('required') || f_register.rePassword.hasError('minlength'))"
+                class="w-full" placeholder="Confirm Password"></p-password>
+            @if((f_register.rePassword.touched || submitted) && f_register.rePassword.hasError('required')){
+            <small id="username2-help" class="p-error block">Password is Required</small>
+            } @else if (f_register.rePassword.hasError('minlength')) {
+            <small id="username2-help" class="p-error block">Password must be at least 6 characters long</small>
+            } @else if (f_register.rePassword.hasError('pattern')) {
+            <small id="username2-help" class="p-error block">Password must contain at least one uppercase letter and one
+                number</small>
+            } @else if (f_register.rePassword.hasError('passwordMismatch')) {
+            <small id="rePassword-help" class="p-error block">Passwords do not match</small>
+            }
             <div class="text-center mt-3">
                 <span class="rec">
                     Already have an account?
@@ -42,11 +139,20 @@
             </div>
         </div>
 
+        <!-- submit form -->
         <div class="col-12 lg:col-8 field">
-            <button pButton pRipple type="submit" label="Create Account"
-                class="w-full p-button-rounded signin"></button>
+            <button pButton pRipple type="submit" [disabled]="submitted"
+                class="w-full p-button-rounded signin justify-content-center">
+                Create Account
+                @if (loading) {
+                <i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i>
+                }
+            </button>
         </div>
+
     </div>
+
+    <!-- Continue with -->
     <div class="col-12 lg:col-8 down">
         <div class="grid flex justify-content-between">
             <div class="col-4">
@@ -79,4 +185,5 @@
             </div>
         </div>
     </div>
+
 </form>

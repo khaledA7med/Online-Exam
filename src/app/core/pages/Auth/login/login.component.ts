@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { AuthApiService } from 'auth-api';
 import { ButtonModule } from 'primeng/button';
@@ -14,6 +15,7 @@ import { Login, LoginForm } from '../../../interfaces/login';
 import { Router, RouterModule } from '@angular/router';
 import { Message, MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -31,9 +33,12 @@ import { MessagesModule } from 'primeng/messages';
   styleUrl: './login.component.scss',
   providers: [MessageService],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup<LoginForm>;
   messages!: Message[];
+  submitted: boolean = false;
+  loading: boolean = false;
+  subscription: Subscription[] = [];
 
   constructor(
     private _AuthApiService: AuthApiService,
@@ -43,12 +48,20 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.initLoginForm();
+    this.loginForm.reset();
   }
 
   initLoginForm(): void {
     this.loginForm = new FormGroup<LoginForm>({
-      email: new FormControl(''),
-      password: new FormControl(''),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/),
+      ]),
     });
   }
 
@@ -56,14 +69,28 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
 
+  validationChecker(): boolean {
+    if (this.loginForm.invalid) {
+      this.messages = [{ severity: 'error', detail: 'Please check your data' }];
+      return false;
+    }
+    return true;
+  }
+
   signin() {
+    this.submitted = true;
+    if (!this.validationChecker()) return;
+    this.loading = true;
     let data: Login = {
       email: this.f_login.email.value!,
       password: this.f_login.password.value!,
     };
-    this._AuthApiService.login(data).subscribe({
+    let sub = this._AuthApiService.login(data).subscribe({
       next: (res) => {
         if (res.message === 'success') {
+          this.loading = false;
+          this.submitted = false;
+
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -71,10 +98,17 @@ export class LoginComponent implements OnInit {
           });
           localStorage.setItem('token', res.token);
         }
-        console.log(res);
       },
-      error: (err) =>
-        (this.messages = [{ severity: 'error', detail: err?.error?.message }]),
+      error: (err) => {
+        this.loading = false;
+        this.submitted = false;
+        this.messages = [{ severity: 'error', detail: err?.error?.message }];
+      },
     });
+    this.subscription.push(sub);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription && this.subscription.forEach((s) => s.unsubscribe());
   }
 }

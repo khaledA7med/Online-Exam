@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
 } from '@angular/forms';
 import { AuthApiService } from 'auth-api';
 import { ButtonModule } from 'primeng/button';
@@ -14,6 +18,7 @@ import { MessagesModule } from 'primeng/messages';
 import { Register, RegisterForm } from '../../../interfaces/register';
 import { Message, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -31,37 +36,112 @@ import { Router } from '@angular/router';
   styleUrl: './register.component.scss',
   providers: [MessageService],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   registerForm!: FormGroup<RegisterForm>;
   messages!: Message[];
+  submitted: boolean = false;
+  loading: boolean = false;
+  subscription: Subscription[] = [];
 
   constructor(
     private _AuthApiService: AuthApiService,
     private messageService: MessageService,
     private route: Router
   ) {}
-
   ngOnInit(): void {
     this.initRegisterForm();
   }
 
+  //#region init form
   initRegisterForm(): void {
-    this.registerForm = new FormGroup<RegisterForm>({
-      username: new FormControl(''),
-      firstName: new FormControl(''),
-      lastName: new FormControl(''),
-      phone: new FormControl(''),
-      email: new FormControl(''),
-      password: new FormControl(''),
-      rePassword: new FormControl(''),
-    });
+    this.registerForm = new FormGroup<RegisterForm>(
+      {
+        username: new FormControl('', [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(25),
+          Validators.pattern(/^[A-Za-z]+$/),
+        ]),
+        firstName: new FormControl('', [
+          Validators.required,
+          Validators.pattern(/^[A-Za-z]+$/),
+        ]),
+        lastName: new FormControl('', [
+          Validators.required,
+          Validators.pattern(/^[A-Za-z]+$/),
+        ]),
+        phone: new FormControl('', [
+          Validators.required,
+          Validators.pattern(/^(010|011|012|015)\d{8}$/),
+        ]),
+        email: new FormControl('', [
+          Validators.required,
+          Validators.pattern(
+            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+          ),
+        ]),
+        password: new FormControl('', [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.pattern(/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/),
+        ]),
+        rePassword: new FormControl('', [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.pattern(/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/),
+        ]),
+      },
+      { validators: this.matchPasswords('password', 'rePassword') }
+    );
   }
 
   get f_register(): RegisterForm {
     return this.registerForm.controls;
   }
+  //#endregion
 
+  //#region Validtion checkers
+  matchPasswords(
+    controlName: string,
+    matchingControlName: string
+  ): ValidatorFn {
+    return (group: AbstractControl): ValidationErrors | null => {
+      const control = group.get(controlName);
+      const matchingControl = group.get(matchingControlName);
+
+      if (
+        matchingControl?.errors &&
+        !matchingControl.errors['passwordMismatch']
+      ) {
+        // return if another validator has already found an error on the matchingControl
+        return null;
+      }
+
+      // check if the passwords match
+      if (control?.value !== matchingControl?.value) {
+        matchingControl?.setErrors({ passwordMismatch: true });
+        return { passwordMismatch: true };
+      } else {
+        matchingControl?.setErrors(null);
+        return null;
+      }
+    };
+  }
+
+  validationChecker(): boolean {
+    if (this.registerForm.invalid) {
+      this.messages = [{ severity: 'error', detail: 'Please check your data' }];
+      return false;
+    }
+    return true;
+  }
+  //#endregion
+
+  //#region submit form
   signup() {
+    this.submitted = true;
+    if (!this.validationChecker()) return;
+    this.loading = true;
     let data: Register = {
       username: this.f_register.username.value!,
       firstName: this.f_register.firstName.value!,
@@ -71,9 +151,11 @@ export class RegisterComponent implements OnInit {
       password: this.f_register.password.value!,
       rePassword: this.f_register.rePassword.value!,
     };
-    this._AuthApiService.register(data).subscribe({
+    let sub = this._AuthApiService.register(data).subscribe({
       next: (res) => {
         if (res.message === 'success') {
+          this.submitted = false;
+          this.loading = false;
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -83,11 +165,18 @@ export class RegisterComponent implements OnInit {
             this.route.navigate(['/']);
           }, 3000);
         }
-        console.log(res.message);
       },
       error: (err) => {
+        this.submitted = false;
+        this.loading = false;
         this.messages = [{ severity: 'error', detail: err?.error?.message }];
       },
     });
+    this.subscription.push(sub);
+  }
+  //#endregion
+
+  ngOnDestroy(): void {
+    this.subscription && this.subscription.forEach((s) => s.unsubscribe());
   }
 }
