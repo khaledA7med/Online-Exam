@@ -9,6 +9,7 @@ import { Message, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SharedModule } from '../../../../shared/components/ui/shared/shared.module';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-forget-password',
@@ -28,7 +29,8 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
   constructor(
     private _AuthApiService: AuthApiService,
     private messageService: MessageService,
-    private route: Router
+    private route: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -76,7 +78,8 @@ export class ForgetPasswordComponent implements OnInit, OnDestroy {
             summary: 'Success',
             detail: res.info,
           });
-          localStorage.setItem('email', data.email);
+          // localStorage.setItem('email', data.email);
+          this.authService.setUserEmail(data.email);
           setTimeout(() => {
             this.submitted = false;
             this.loading = false;

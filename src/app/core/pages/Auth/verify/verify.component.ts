@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  effect,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthApiService } from 'auth-api';
 import { Router } from '@angular/router';
@@ -7,6 +13,7 @@ import { Message, MessageService } from 'primeng/api';
 import { ForgetPassword } from '../../../interfaces/forget-password';
 import { Subscription } from 'rxjs';
 import { SharedModule } from '../../../../shared/components/ui/shared/shared.module';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-verify',
@@ -22,6 +29,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
   submitted: boolean = false;
   loading: boolean = false;
   subscription: Subscription[] = [];
+  userEmail: string | null = null;
 
   resendDisabled: boolean = false;
   timeRemaining: number = 60;
@@ -31,8 +39,14 @@ export class VerifyComponent implements OnInit, OnDestroy {
     private _AuthApiService: AuthApiService,
     private messageService: MessageService,
     private route: Router,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService
+  ) {
+    effect(() => {
+      this.userEmail = this.authService.getUserEmailSignal()();
+      // You can now use this.userEmail as needed in your component
+    });
+  }
 
   ngOnInit(): void {
     this.initVerifyForm();
@@ -77,7 +91,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
   resendOtp() {
     this.startResendTimer();
     let data: ForgetPassword = {
-      email: localStorage.getItem('email')!,
+      email: this.userEmail!,
     };
     let sub = this._AuthApiService.forgetPassword(data).subscribe({
       next: (res) => {
