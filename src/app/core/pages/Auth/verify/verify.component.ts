@@ -21,7 +21,6 @@ import { AuthService } from '../../../services/auth.service';
   imports: [SharedModule],
   templateUrl: './verify.component.html',
   styleUrl: './verify.component.scss',
-  providers: [MessageService],
 })
 export class VerifyComponent implements OnInit, OnDestroy {
   verifyForm!: FormGroup<VerifyForm>;

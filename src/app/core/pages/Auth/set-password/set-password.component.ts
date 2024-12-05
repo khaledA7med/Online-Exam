@@ -13,7 +13,6 @@ import { SharedModule } from '../../../../shared/components/ui/shared/shared.mod
   imports: [SharedModule],
   templateUrl: './set-password.component.html',
   styleUrl: './set-password.component.scss',
-  providers: [MessageService],
 })
 export class SetPasswordComponent {
   setPasswordForm!: FormGroup<SetPasswordForm>;
@@ -40,8 +39,10 @@ export class SetPasswordComponent {
       ]),
       newPassword: new FormControl('', [
         Validators.required,
-        Validators.minLength(6),
-        Validators.pattern(/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/),
+        Validators.minLength(8),
+        Validators.pattern(
+          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+        ),
       ]),
     });
   }

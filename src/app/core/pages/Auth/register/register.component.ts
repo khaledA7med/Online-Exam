@@ -20,7 +20,6 @@ import { SharedModule } from '../../../../shared/components/ui/shared/shared.mod
   imports: [SharedModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
-  providers: [MessageService],
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   registerForm!: FormGroup<RegisterForm>;
@@ -68,13 +67,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
         ]),
         password: new FormControl('', [
           Validators.required,
-          Validators.minLength(6),
-          Validators.pattern(/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/),
+          Validators.minLength(8),
+          Validators.pattern(
+            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+          ),
         ]),
         rePassword: new FormControl('', [
           Validators.required,
-          Validators.minLength(6),
-          Validators.pattern(/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/),
+          Validators.minLength(8),
+          Validators.pattern(
+            /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+          ),
         ]),
       },
       { validators: this.matchPasswords('password', 'rePassword') }

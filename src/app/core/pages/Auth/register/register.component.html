@@ -1,4 +1,3 @@
-<p-toast />
 <form class="form grid flex justify-content-center p-fluid" [formGroup]="registerForm" (ngSubmit)="signup()">
     <div class="col-12 lg:col-8 grid flex justify-content-center">
 
@@ -101,11 +100,12 @@
                 f_register.password.hasError('required') || f_register.password.hasError('minlength'))" class="w-full"
                 placeholder="Password"></p-password>
             @if((f_register.password.touched || submitted) && f_register.password.hasError('required')){
-            <small id="username2-help" class="p-error block">Password is Required</small>
+            <small id="password" class="p-error block">Password is Required</small>
             } @else if (f_register.password.hasError('minlength')) {
-            <small id="username2-help" class="p-error block">Password must be at least 6 characters long</small>
+            <small id="password" class="p-error block">Password must be at least 8 characters long</small>
             } @else if (f_register.password.hasError('pattern')) {
-            <small id="username2-help" class="p-error block">Password must contain at least one uppercase letter and one
+            <small id="password" class="p-error block">Password must contain at least one special character ,one
+                uppercase letter and one
                 number</small>
             }
         </div>
@@ -121,11 +121,12 @@
                 f_register.rePassword.hasError('required') || f_register.rePassword.hasError('minlength'))"
                 class="w-full" placeholder="Confirm Password"></p-password>
             @if((f_register.rePassword.touched || submitted) && f_register.rePassword.hasError('required')){
-            <small id="username2-help" class="p-error block">Password is Required</small>
+            <small id="urePassword" class="p-error block">Password is Required</small>
             } @else if (f_register.rePassword.hasError('minlength')) {
-            <small id="username2-help" class="p-error block">Password must be at least 6 characters long</small>
+            <small id="urePassword" class="p-error block">Password must be at least 8 characters long</small>
             } @else if (f_register.rePassword.hasError('pattern')) {
-            <small id="username2-help" class="p-error block">Password must contain at least one uppercase letter and one
+            <small id="urePassword" class="p-error block">Password must contain at least one special character ,one
+                uppercase letter and one
                 number</small>
             } @else if (f_register.rePassword.hasError('passwordMismatch')) {
             <small id="rePassword-help" class="p-error block">Passwords do not match</small>

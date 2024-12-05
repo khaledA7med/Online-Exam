@@ -17,7 +17,6 @@ import { AuthService } from '../../../services/auth.service';
   imports: [SharedModule],
   templateUrl: './forget-password.component.html',
   styleUrl: './forget-password.component.scss',
-  providers: [MessageService],
 })
 export class ForgetPasswordComponent implements OnInit, OnDestroy {
   forgetPasswordForm!: FormGroup<ForgetPasswordForm>;

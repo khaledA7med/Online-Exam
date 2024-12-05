@@ -1,4 +1,3 @@
-<p-toast />
 <form class="form grid flex justify-content-center p-fluid" [formGroup]="loginForm" (ngSubmit)="signin()">
     <div class="col-12 lg:col-8 grid flex justify-content-center">
         <!-- error message -->
@@ -32,11 +31,12 @@
                 f_login.password.hasError('required') || f_login.password.hasError('minlength'))"
                 placeholder="Password"></p-password>
             @if((f_login.password.touched || submitted) && f_login.password.hasError('required')){
-            <small id="username2-help" class="p-error block">Password is Required</small>
+            <small id="password" class="p-error block">Password is Required</small>
             } @else if (f_login.password.hasError('minlength')) {
-            <small id="username2-help" class="p-error block">Password must be at least 6 characters long</small>
+            <small id="password" class="p-error block">Password must be at least 8 characters long</small>
             } @else if (f_login.password.hasError('pattern')) {
-            <small id="username2-help" class="p-error block">Password must contain at least one uppercase letter and one
+            <small id="password" class="p-error block">Password must contain at least one special character ,one
+                uppercase letter and one
                 number</small>
             }
             <div class="text-right mt-2">

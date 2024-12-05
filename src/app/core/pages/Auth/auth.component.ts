@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SharedModule } from '../../../shared/components/ui/shared/shared.module';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-auth',
   standalone: true,
