@@ -75,14 +75,17 @@ export class LoginComponent implements OnInit, OnDestroy {
     let sub = this._AuthApiService.login(data).subscribe({
       next: (res) => {
         if (res.message === 'success') {
-          this.loading = false;
-          this.submitted = false;
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
             detail: 'Login Successfully',
           });
           localStorage.setItem('token', res.token);
+          setTimeout(() => {
+            this.submitted = false;
+            this.loading = false;
+            this.route.navigate(['/dashboard']);
+          }, 3000);
         }
       },
       error: (err) => {
