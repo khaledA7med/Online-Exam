@@ -7,8 +7,11 @@ export const authGuard: CanActivateFn = (route, state) => {
   const auth: AuthService = inject(AuthService);
   const router: Router = inject(Router);
   const email = localStorage.getItem(localStorageKeys.EMAIL);
+  console.log(auth.isTokenAvailabe);
 
-  if (!auth.isTokenAvailabe) {
+  if (auth.isTokenAvailabe) {
+    console.log(auth.isTokenAvailabe);
+
     router.navigate(['/']);
     return false;
   }
