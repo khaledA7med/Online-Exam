@@ -81,11 +81,9 @@ export class LoginComponent implements OnInit, OnDestroy {
             detail: 'Login Successfully',
           });
           localStorage.setItem('token', res.token);
-          setTimeout(() => {
-            this.submitted = false;
-            this.loading = false;
-            this.route.navigate(['/dashboard']);
-          }, 3000);
+          this.submitted = false;
+          this.loading = false;
+          this.route.navigate(['/dashboard']);
         }
       },
       error: (err) => {

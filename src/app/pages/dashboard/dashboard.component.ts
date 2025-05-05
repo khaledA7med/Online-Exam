@@ -10,5 +10,5 @@ import { ProgressBarModule } from 'primeng/progressbar';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
-  value: number = 72;
+  value: Number = 70;
 }
