@@ -10,8 +10,6 @@ export const authGuard: CanActivateFn = (route, state) => {
   console.log(auth.isTokenAvailabe);
 
   if (auth.isTokenAvailabe) {
-    console.log(auth.isTokenAvailabe);
-
     router.navigate(['/']);
     return false;
   }
