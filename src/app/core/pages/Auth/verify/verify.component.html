@@ -9,7 +9,7 @@
 
         <!-- code -->
         <div class="col-12 lg:col-8 field">
-            <input id="resetCode" type="text" pInputText formControlName="resetCode" class="w-full signin_input"
+            <input id="resetCode" type="number" pInputText formControlName="resetCode" class="w-full signin_input"
                 [class.ng-invalid]="
                 (f_verify.resetCode.touched || submitted) && (f_verify.resetCode.hasError('pattern') ||
                 f_verify.resetCode.hasError('required') || f_verify.resetCode.hasError('minlength'))" [class.ng-dirty]="
